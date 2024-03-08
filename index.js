@@ -18,11 +18,6 @@ const swaggerOptions = {
             version: '1.0.0',
             description: 'API for calculating distance and Time using Google Maps API',
         },
-        servers: [
-            {
-                url: 'https://google-map-api-wine.vercel.app/'
-            }
-        ]
     },
     apis: ['index.js'],
 };
