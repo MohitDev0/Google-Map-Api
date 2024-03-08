@@ -28,7 +28,9 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
-app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
+
 
 /**
  * @swagger
