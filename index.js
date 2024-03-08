@@ -20,7 +20,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'https://google-map-api.onrender.com/'
+                url: 'https://google-map-api-azure.vercel.app/'
             }
         ]
     },
@@ -28,9 +28,8 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
-// app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
-
+app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { explorer: true }));
 
 /**
  * @swagger
@@ -75,7 +74,8 @@ app.get("/find", async (req, res) => {
             time
         });
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error1' });
     }
 });
 
