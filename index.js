@@ -2,7 +2,6 @@ const express = require("express");
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const cors = require("cors");
-const fetch = require("node-fetch");
 require('dotenv').config();
 
 const app = express();
@@ -12,15 +11,20 @@ app.use(express.json());
 app.use(cors());
 
 const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Distance and Time API',
-      version: '1.0.0',
-      description: 'API for calculating distance and Time using Google Maps API',
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Distance and Time API',
+            version: '1.0.0',
+            description: 'API for calculating distance and Time using Google Maps API',
+        },
+        servers: [
+            {
+                url: 'https://google-map-api-wine.vercel.app/'
+            }
+        ]
     },
-  },
-  apis: ['index.js'], // Assuming your API routes are defined in 'index.js'
+    apis: ['index.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
@@ -55,24 +59,24 @@ app.use('/distance', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  */
 
 app.get("/find", async (req, res) => {
-  const origin = req.query.origin;
-  const destination = req.query.destination;
-  const apiKey = process.env.apikey;
+    const origin = req.query.origin;
+    const destination = req.query.destination;
+    const apiKey = process.env.apikey;
 
-  try {
-    const fetchDistance = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${apiKey}`);
-    const data = await fetchDistance.json();
-    const distance = data.rows[0].elements[0].distance.text;
-    const time = data.rows[0].elements[0].duration.text;
-    res.send({
-      distance,
-      time
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+    try {
+        const fetchDistance = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${apiKey}`);
+        const data = await fetchDistance.json();
+        const distance = data.rows[0].elements[0].distance.text;
+        const time = data.rows[0].elements[0].duration.text;
+        res.send({
+            distance,
+            time
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
+    console.log(`Server is running on ${PORT}`);
 });
